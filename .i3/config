@@ -94,13 +94,13 @@ bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
-# move focused window to other output
-bindsym $mod+Control+Shift+h exec "i3-msg move container to output left && i3-msg focus output left"
-bindsym $mod+Control+Shift+j exec "i3-msg move container to output down && i3-msg focus output down"
-bindsym $mod+Control+Shift+k exec "i3-msg move container to output up && i3-msg focus output up"
-bindsym $mod+Control+Shift+l exec "i3-msg move container to output right && i3-msg focus output right"
+# move focused to other output
+bindsym $mod+Control+Shift+h exec "i3-msg focus output left"
+bindsym $mod+Control+Shift+j exec "i3-msg focus output down"
+bindsym $mod+Control+Shift+k exec "i3-msg focus output up"
+bindsym $mod+Control+Shift+l exec "i3-msg focus output right"
 
-# alternatively, you can use the cursor keys:
+# move window to other output
 bindsym $mod+Control+Shift+Left exec "i3-msg move container to output left && i3-msg focus output left"
 bindsym $mod+Control+Shift+Down exec "i3-msg move container to output down && i3-msg focus output down"
 bindsym $mod+Control+Shift+Up exec "i3-msg move container to output up && i3-msg focus output up"

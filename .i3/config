@@ -31,6 +31,9 @@ bindsym Mod1+9 workspace prev
 bindsym Mod1+0 workspace prev
 
 ## Assign workspaces to programs
+exec --no-startup-id 'sudo systemd-resolve --set-dns 10.91.92.125 --interface eno1'
+exec --no-startup-id i3-msg 'workspace 1; exec /usr/bin/firefox https://cas-west.exchange2.ara.wan/owa/'
+exec --no-startup-id i3-msg 'workspace 1; exec /usr/bin/slack'
 
 # Manage (named) workspaces.                                                                                                                                    
 bindsym Mod1+comma  exec i3-input  -P '(switch view to workspace) name: ' -F 'workspace "%s"', mode "default"
@@ -52,10 +55,10 @@ font pango: Ubuntu Mono 8
 floating_modifier $mod
 
 # start a terminal
-#bindsym $mod+Return exec gnome-terminal
+bindsym $mod+Return exec gnome-terminal
 #bindsym $mod+Return exec xterm
 #bindsym $mod+Return exec terminator
-bindsym $mod+Return exec xfce4-terminal
+#bindsym $mod+Return exec xfce4-terminal
 
 # kill focused window
 bindsym $mod+q kill
@@ -68,10 +71,10 @@ bindsym $mod+q kill
 bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 # change focus
-bindsym $mod+j focus left
-bindsym $mod+k focus down
-bindsym $mod+l focus up
-bindsym $mod+semicolon focus right
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -80,10 +83,10 @@ bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
 # move focused window
-bindsym $mod+Shift+j move left
-bindsym $mod+Shift+k move down
-bindsym $mod+Shift+l move up
-bindsym $mod+Shift+semicolon move right
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
@@ -91,8 +94,20 @@ bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
+# move focused to other output
+bindsym $mod+Control+Shift+h exec "i3-msg focus output left"
+bindsym $mod+Control+Shift+j exec "i3-msg focus output down"
+bindsym $mod+Control+Shift+k exec "i3-msg focus output up"
+bindsym $mod+Control+Shift+l exec "i3-msg focus output right"
+
+# move window to other output
+bindsym $mod+Control+Shift+Left exec "i3-msg move container to output left && i3-msg focus output left"
+bindsym $mod+Control+Shift+Down exec "i3-msg move container to output down && i3-msg focus output down"
+bindsym $mod+Control+Shift+Up exec "i3-msg move container to output up && i3-msg focus output up"
+bindsym $mod+Control+Shift+Right exec "i3-msg move container to output right && i3-msg focus output right"
+
 # split in horizontal orientation
-bindsym $mod+h split h
+bindsym $mod+b split h
 
 # split in vertical orientation
 bindsym $mod+v split v
@@ -168,11 +183,12 @@ bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -- -10
 bindsym Print exec /usr/bin/screenshot.sh root
 bindsym Mod1+Print exec /usr/bin/screenshot.sh active
 
-#bindcode 78 exec i3lock
-bindcode 78 exec xpra detach
+bindsym Mod1+Escape exec i3lock -c 000000
+#bindcode 78 exec xpra detach
 
 #Appearance Tweaks
-for_window [class="^.*"] border pixel 0
+focus_follows_mouse no
+for_window [class="^.*"] border pixel 5
 new_window pixel
 client.focused          #3F8AC2 #096BAA #000000 #00DA8E
 client.focused_inactive #333333 #5F676A #ffffff #484e50
@@ -180,46 +196,47 @@ client.unfocused        #333333 #424242 #888888 #292d2e
 client.urgent           #C10004 #900000 #ffffff #900000
 #exec --no-startup-id feh --bg-scale '/home/bryson/documents/woodsbg-3440x1440.jpg'
 
-exec --no-startup-id xsetroot -solid "#2ca05b"
+#exec --no-startup-id xsetroot -solid "#2ca05b"
+exec --no-startup-id xsetroot -solid "#000000"
 
 
 # GAPS config
-gaps inner 10
-gaps outer 0
-smart_gaps on
-set $mode_gaps Gaps: (o) outer, (i) inner
-set $mode_gaps_outer Outer Gaps: +|-|0 (local), Shift + +|-|0 (global)
-set $mode_gaps_inner Inner Gaps: +|-|0 (local), Shift + +|-|0 (global)
-bindsym $mod+Shift+g mode "$mode_gaps"
-
-mode "$mode_gaps" {
-        bindsym o      mode "$mode_gaps_outer"
-        bindsym i      mode "$mode_gaps_inner"
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-}
-
-mode "$mode_gaps_inner" {
-        bindsym plus  gaps inner current plus 5
-        bindsym minus gaps inner current minus 5
-        bindsym 0     gaps inner current set 0
-
-        bindsym Shift+plus  gaps inner all plus 5
-        bindsym Shift+minus gaps inner all minus 5
-        bindsym Shift+0     gaps inner all set 0
-
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-}
-mode "$mode_gaps_outer" {
-        bindsym plus  gaps outer current plus 5
-        bindsym minus gaps outer current minus 5
-        bindsym 0     gaps outer current set 0
-
-        bindsym Shift+plus  gaps outer all plus 5
-        bindsym Shift+minus gaps outer all minus 5
-        bindsym Shift+0     gaps outer all set 0
-
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-}
+#notusinggaps#gaps inner 10
+#notusinggaps#gaps outer 0
+#notusinggaps#smart_gaps on
+#notusinggaps#set $mode_gaps Gaps: (o) outer, (i) inner
+#notusinggaps#set $mode_gaps_outer Outer Gaps: +|-|0 (local), Shift + +|-|0 (global)
+#notusinggaps#set $mode_gaps_inner Inner Gaps: +|-|0 (local), Shift + +|-|0 (global)
+#notusinggaps#bindsym $mod+Shift+g mode "$mode_gaps"
+#notusinggaps#
+#notusinggaps#mode "$mode_gaps" {
+#notusinggaps#        bindsym o      mode "$mode_gaps_outer"
+#notusinggaps#        bindsym i      mode "$mode_gaps_inner"
+#notusinggaps#        bindsym Return mode "default"
+#notusinggaps#        bindsym Escape mode "default"
+#notusinggaps#}
+#notusinggaps#
+#notusinggaps#mode "$mode_gaps_inner" {
+#notusinggaps#        ocus_follows_mobindsym plus  gaps inner current plus 5
+#notusinggaps#        bindsym minus gaps inner current minus 5
+#notusinggaps#        bindsym 0     gaps inner current set 0
+#notusinggaps#
+#notusinggaps#        bindsym Shift+plus  gaps inner all plus 5
+#notusinggaps#        bindsym Shift+minus gaps inner all minus 5
+#notusinggaps#        bindsym Shift+0     gaps inner all set 0
+#notusinggaps#
+#notusinggaps#        bindsym Return mode "default"
+#notusinggaps#        bindsym Escape mode "default"
+#notusinggaps#}
+#notusinggaps#mode "$mode_gaps_outer" {
+#notusinggaps#        bindsym plus  gaps outer current plus 5
+#notusinggaps#        bindsym minus gaps outer current minus 5
+#notusinggaps#        bindsym 0     gaps outer current set 0
+#notusinggaps#
+#notusinggaps#        bindsym Shift+plus  gaps outer all plus 5
+#notusinggaps#        bindsym Shift+minus gaps outer all minus 5
+#notusinggaps#        bindsym Shift+0     gaps outer all set 0
+#notusinggaps#
+#notusinggaps#        bindsym Return mode "default"
+#notusinggaps#        bindsym Escape mode "default"
+#notusinggaps#}

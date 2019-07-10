@@ -1,113 +1,97 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
-set mouse=
+"set mouse=
 
 " set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
 
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-" plugin on GitHub repo
-" Plugin 'tpope/vim-fugitive'
-" plugin from http://vim-scripts.org/vim/scripts.html
-" Plugin 'L9'
-" Plugin 'YouCompleteMe'
-" Git plugin not hosted on GitHub
-" Plugin 'git://git.wincent.com/command-t.git'
-" git repos on your local machine (i.e. when working on your own plugin)
-" Plugin 'file:///home/gmarik/path/to/plugin'
-" The sparkup vim script is in a subdirectory of this repo called vim.
-" Pass the path to set the runtimepath properly.
-" Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Avoid a name conflict with L9
-" Plugin 'user/L9', {'name': 'newL9'}
-"
+" add all your plugins here (note older versions of Vundle
+" used Bundle instead of Plugin)
+
+Plugin 'vim-scripts/indentpython.vim'
+Bundle 'Valloric/YouCompleteMe'
+Plugin 'vim-syntastic/syntastic'
+Plugin 'sheerun/vim-polyglot'
+Plugin 'vim-airline/vim-airline'
+Plugin 'scrooloose/nerdtree'
+
 
 " All of your Plugins must be added before the following line
+call vundle#end()            " required
 filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just
-" :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
 
-" Put plugins and dictionaries in this dir (also on Windows)
-let vimDir = '$HOME/.vim'
-let &runtimepath.=','.vimDir
+" ################ Custom ################
+"
+" Custom keybindings
+map <Space> <Leader>
+map <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
+map <leader>n :NERDTreeToggle<CR>
+map <leader>l :set invnumber<CR>
 
-" Keep undo history across sessions by storing it in a file
-if has('persistent_undo')
-    let myUndoDir = expand(vimDir . '/undodir')
-    " Create dirs
-    call system('mkdir ' . vimDir)
-    call system('mkdir ' . myUndoDir)
-    let &undodir = myUndoDir
-    set undofile
+" Custom format
+set number
+set numberwidth=5
+set wrapmargin=5
+
+" Use system clipboard for copy paste (requires 'apt install vim-gtk')
+set clipboard=unnamedplus
+
+"split navigations
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+" PEP8 python indent
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set textwidth=79
+set expandtab
+set autoindent
+set fileformat=unix
+
+set encoding=utf-8
+
+" Space+g to go to python definition
+let g:ycm_autoclose_preview_window_after_completion=1
+
+" Code highlighting and color scheme
+let python_highlight_all=1
+syntax on
+let g:onedark_color_overrides = { "black": {"gui": "#161617", "cterm": "235", "cterm16": "0" }, "gutter_fg_grey": {"gui": "#990000", "cterm": "235", "cterm16": "0" }}
+colorscheme onedark
+let g:airline_theme='onedark'
+
+" Customize tab line
+let g:airline#extensions#tabline#enabled = 1
+
+" Support 24 bit color
+"Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
+"If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
+"(see < http://sunaku.github.io/tmux-24bit-color.html#usage > for more information.)
+if (empty($TMUX))
+  if (has("nvim"))
+    "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
+    let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+  endif
+  "For Neovim > 0.1.5 and Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
+  "Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
+  " < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
+  if (has("termguicolors"))
+    set termguicolors
+  endif
 endif
 
-set nowrap
-set shiftwidth=4 softtabstop=4
-set bg=light
-syntax on
-" show matching brackets
-autocmd FileType perl set showmatch
-
-" dont use Q for Ex mode
-map Q :q
-
-" show line numbers
-autocmd FileType perl set number
-
-" check perl code with :make
-autocmd FileType perl set makeprg=perl\ -c\ %\ $*
-autocmd FileType perl set errorformat=%f:%l:%m
-autocmd FileType perl set autowrite
-
-" syntax color complex things like @{${"foo"}}
-let perl_extended_vars = 1
-
-nnoremap <A-F1> 1gt
-nnoremap <A-F2> 2gt
-nnoremap <A-F3> 3gt
-nnoremap <A-F4> 4gt
-nnoremap <A-F5> 5gt
-nnoremap <A-F6> 6gt
-nnoremap <A-F7> 7gt
-nnoremap <A-F8> 8gt
-nnoremap <A-F9> 9gt
-nnoremap <A-F0> 10gt
-
-nnoremap <F7> gT
-nnoremap <F8> gt
-
-nmap <C-e> :w<cr>:!/home/bryson/git-dev/network_discovery/send_dev_to_wfocus.pl <cr>
-
-let g:SuperTabDefaultCompletionType = "context"
-
-"autocmd BufWritePost * execute '! if ( -d .git || git rev-parse --git-dir > /dev/null 2>&1 ) then git add % ; git commit -m %; endif'
-"autocmd BufWritePost * execute '! sh -c "if [ -d .git ] || git rev-parse --git-dir > /dev/null 2>&1 ; then git add % ; git commit -m %; fi"'
-
-
-" requires vim-python and python-git
-function! CommitFile()
-python << EOF
-import vim, git
-curfile = vim.current.buffer.name
-if curfile:
-    try:
-        repo = git.Repo(curfile)
-        repo.git.add(curfile)
-        repo.git.commit(m='Update')
-    except (git.InvalidGitRepositoryError, git.GitCommandError):
-        pass
-EOF
-endfunction
-"au BufWritePost * call CommitFile()
+" Nerdtree settings
+let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
+" let NERDTreeShowHidden=1
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
